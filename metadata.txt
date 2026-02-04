@@ -7,6 +7,7 @@ author=Luis Lopes
 email=geo.luislopes@gmail.com
 category=Vector
 icon=icon.png
-homepage=
-tracker=
-repository=
+homepage=https://github.com/lopesluis/intersect_overlay
+tracker=https://github.com/lopesluis/intersect_overlay
+repository=https://github.com/lopesluis/intersect_overlay/issues
+
