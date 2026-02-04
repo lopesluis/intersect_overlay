@@ -23,4 +23,5 @@ calculando automaticamente:
 - Não grava arquivos no disco automaticamente
 
 ## Licença
-MIT License
+## License
+GNU General Public License v2 or later (GPL-2.0+)
