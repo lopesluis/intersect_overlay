@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OverlayDialogBase</class>
+
+ <widget class="QDialog" name="OverlayDialogBase">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>560</width>
+    <height>133</height>
+   </rect>
+  </property>
+
+  <property name="windowTitle">
+   <string>Interseção (Overlay) - Camada temporária</string>
+  </property>
+
+  <!-- GARANTE LAYOUT ESQUERDA → DIREITA -->
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+
+  <layout class="QVBoxLayout" name="verticalLayout">
+
+   <!-- Placeholder da MessageBar -->
+   <item>
+    <widget class="QWidget" name="msgBarPlaceholder" native="true"/>
+   </item>
+
+   <!-- Camada base -->
+   <item>
+    <layout class="QHBoxLayout" name="rowBase">
+     <item>
+      <widget class="QLabel" name="lblBase">
+       <property name="text">
+        <string>Camada BASE (polígono):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cboBase"/>
+     </item>
+    </layout>
+   </item>
+
+   <!-- Camada sobreposição -->
+   <item>
+    <layout class="QHBoxLayout" name="rowOverlay">
+     <item>
+      <widget class="QLabel" name="lblOverlay">
+       <property name="text">
+        <string>Camada SOBREPOSIÇÃO (polígono):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cboOverlay"/>
+     </item>
+    </layout>
+   </item>
+
+   <!-- BOTÕES -->
+   <item>
+    <layout class="QHBoxLayout" name="rowButtons">
+
+     <!-- FECHAR (ESQUERDA) -->
+     <item>
+      <widget class="QPushButton" name="btnClose">
+       <property name="text">
+        <string>Fechar</string>
+       </property>
+      </widget>
+     </item>
+
+     <!-- ESPAÇADOR EXPANDINDO (EMPU RRA O EXECUTAR PARA A DIREITA) -->
+     <item>
+      <spacer name="spacerButtons">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+
+     <!-- EXECUTAR (DIREITA) -->
+     <item>
+      <widget class="QPushButton" name="btnRun">
+       <property name="text">
+        <string>Executar</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>

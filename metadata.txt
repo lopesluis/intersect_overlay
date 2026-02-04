@@ -1,0 +1,12 @@
+[general]
+name=Interseção Overlay
+qgisMinimumVersion=3.0
+description=Gera camada temporária da interseção entre dois polígonos e calcula área/perímetro.
+version=1.0.2
+author=Luis Lopes
+email=geo.luislopes@gmail.com
+category=Vector
+icon=icon.png
+homepage=
+tracker=
+repository=
