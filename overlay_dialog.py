@@ -1,6 +1,6 @@
 from qgis.PyQt.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QComboBox,
-    QPushButton, QDialogButtonBox, QSizePolicy
+    QPushButton, QDialogButtonBox, QSizePolicy, QCheckBox
 )
 from qgis.core import Qgis, QgsProject, QgsVectorLayer, QgsWkbTypes
 from qgis.gui import QgsMessageBar
@@ -14,33 +14,33 @@ class OverlayDialog(QDialog):
         self.iface = iface
 
         self.setWindowTitle("Interseção (Overlay) - Camada temporária")
-        self.setMinimumWidth(520)
+        self.setMinimumWidth(560)
 
-        # Message bar dentro do dialog (Cookbook)
-        # :contentReference[oaicite:10]{index=10}
         self.bar = QgsMessageBar()
         self.bar.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        # Layout principal
         layout = QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.addWidget(self.bar)
 
-        # Linha 1: camada base
+        # Linha 1: camada base + checkbox "selecionadas"
         row1 = QHBoxLayout()
         row1.addWidget(QLabel("Camada BASE (polígono):"))
         self.cbo_base = QComboBox()
         row1.addWidget(self.cbo_base)
+        self.chk_base_selected = QCheckBox("Apenas selecionadas")
+        row1.addWidget(self.chk_base_selected)
         layout.addLayout(row1)
 
-        # Linha 2: camada overlay
+        # Linha 2: camada overlay + checkbox "selecionadas"
         row2 = QHBoxLayout()
         row2.addWidget(QLabel("Camada SOBREPOSIÇÃO (polígono):"))
         self.cbo_overlay = QComboBox()
         row2.addWidget(self.cbo_overlay)
+        self.chk_overlay_selected = QCheckBox("Apenas selecionadas")
+        row2.addWidget(self.chk_overlay_selected)
         layout.addLayout(row2)
 
-        # Botão executar + Fechar
         self.btn_run = QPushButton("Executar")
         self.btn_run.clicked.connect(self.on_run)
 
@@ -56,7 +56,6 @@ class OverlayDialog(QDialog):
         self.setLayout(layout)
 
     def refresh_layers(self):
-        """Recarrega a lista de camadas poligonais do projeto."""
         self.cbo_base.clear()
         self.cbo_overlay.clear()
 
@@ -91,7 +90,31 @@ class OverlayDialog(QDialog):
             self._msg("Erro", "Não foi possível obter as camadas selecionadas.", Qgis.Critical)
             return
 
-        out_layer = build_intersection_memory_layer(layer_base, layer_over)
+        if not layer_base.crs().isValid() or not layer_over.crs().isValid():
+            self._msg(
+                "Erro",
+                "Uma das camadas está sem SRC/CRS definido. Defina o SRC da camada e tente novamente.",
+                Qgis.Critical
+            )
+            return
+
+        only_sel_base = self.chk_base_selected.isChecked()
+        only_sel_over = self.chk_overlay_selected.isChecked()
+
+        # Se marcou "apenas selecionadas" mas não tem seleção, avisa
+        if only_sel_base and layer_base.selectedFeatureCount() == 0:
+            self._msg("Aviso", "BASE: nenhuma feição selecionada.", Qgis.Warning)
+            return
+        if only_sel_over and layer_over.selectedFeatureCount() == 0:
+            self._msg("Aviso", "SOBREPOSIÇÃO: nenhuma feição selecionada.", Qgis.Warning)
+            return
+
+        out_layer = build_intersection_memory_layer(
+            layer_base,
+            layer_over,
+            only_selected_a=only_sel_base,
+            only_selected_b=only_sel_over
+        )
 
         if out_layer is None:
             self._msg("Erro", "Falha ao gerar a camada de interseção.", Qgis.Critical)
@@ -115,5 +138,4 @@ class OverlayDialog(QDialog):
         return layers
 
     def _msg(self, title, text, level):
-        # Message bar (Cookbook mostra pushMessage e níveis Qgis.*)
         self.bar.pushMessage(title, text, level=level)

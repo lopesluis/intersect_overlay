@@ -1,9 +1,10 @@
 [general]
 name=Interseção Overlay
-qgisMinimumVersion=3.0
-description=Gera camada temporária da interseção entre dois polígonos e calcula área/perímetro.
-version=1.0.2
-author=Luis Lopes
+qgisMinimumVersion=3.40
+description=PT-BR: Gera camada temporária da interseção entre dois polígonos e calcula área/perímetro. EN: Creates a temporary layer representing the intersection between two polygons and computes area and perimeter.
+about=Plugin para QGIS que cria uma camada temporária com a interseção entre duas camadas poligonais e adiciona campos com área em m², área em hectares e perímetro em metros. O plugin recomenda o uso de CRS projetado em metros.
+version=1.0.4
+author=Luís Lopes
 email=geo.luislopes@gmail.com
 category=Vector
 icon=icon.png
